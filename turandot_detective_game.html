@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Turandot Cross-Cultural Detective Game</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+
+:root {
+  --crimson: #8b0000;
+  --gold: #c9a227;
+  --ivory: #fdfbf7;
+  --ink: #1a1a2e;
+  --parchment: #f5f0e6;
+  --shadow: rgba(0,0,0,0.15);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, var(--ivory) 0%, var(--parchment) 100%);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ===== LOGIN SCREEN ===== */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.login-title {
+  font-family: 'Cinzel', serif;
+  font-size: 48px;
+  color: var(--crimson);
+  letter-spacing: 4px;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px var(--shadow);
+}
+
+.login-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 20px;
+  color: #666;
+  font-style: italic;
+  margin-bottom: 50px;
+}
+
+.login-card {
+  background: white;
+  border: 2px solid var(--crimson);
+  border-radius: 16px;
+  padding: 50px 60px;
+  box-shadow: 0 20px 60px var(--shadow);
+  max-width: 500px;
+  width: 100%;
+}
+
+.login-card h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  color: var(--crimson);
+  margin-bottom: 30px;
+}
+
+.input-group {
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 18px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: 'Inter', sans-serif;
+  transition: all 0.3s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 3px rgba(139,0,0,0.1);
+}
+
+.btn-start {
+  width: 100%;
+  padding: 16px;
+  background: var(--crimson);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-start:hover {
+  background: #a52a2a;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139,0,0,0.3);
+}
+
+.welcome-msg {
+  font-size: 14px;
+  color: #888;
+  margin-top: 20px;
+}
+
+/* ===== GAME HEADER ===== */
+.game-header {
+  text-align: center;
+  padding: 30px 20px;
+  border-bottom: 3px double var(--crimson);
+  margin-bottom: 30px;
+}
+
+.game-title {
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  color: var(--crimson);
+  letter-spacing: 3px;
+}
+
+.game-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: #777;
+  font-style: italic;
+  margin-top: 8px;
+}
+
+.player-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--ink);
+  padding: 6px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-top: 15px;
+  letter-spacing: 1px;
+}
+
+/* ===== NAVIGATION ===== */
+.nav-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 30px;
+  padding: 15px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.nav-btn {
+  background: transparent;
+  color: var(--crimson);
+  border: 2px solid var(--crimson);
+  padding: 10px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 1px;
+  transition: all 0.3s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+  background: var(--crimson);
+  color: white;
+  box-shadow: 0 4px 12px rgba(139,0,0,0.3);
+}
+
+.nav-btn.special {
+  border-color: var(--gold);
+  color: #8b6914;
+}
+
+.nav-btn.special:hover {
+  background: var(--gold);
+  color: var(--ink);
+}
+
+/* ===== SECTIONS ===== */
+.section {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  color: var(--crimson);
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--crimson);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.music-note {
+  background: linear-gradient(135deg, #e6e6fa, #f0e6fa);
+  border-left: 4px solid #9370db;
+  padding: 14px 18px;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  color: #5a4a6a;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ===== CHARACTERS ===== */
+.character-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 15px;
+}
+
+.character-card {
+  background: linear-gradient(135deg, #faf8f5, #fff);
+  border: 1px solid #e0d5c5;
+  border-radius: 10px;
+  padding: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.character-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: var(--gold);
+}
+
+.character-name {
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  color: var(--crimson);
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.character-role {
+  font-size: 11px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+/* ===== CLUES ===== */
+.clue-box {
+  background: linear-gradient(135deg, #fffbea, #fff8f0);
+  border: 1px dashed #d4a574;
+  padding: 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  position: relative;
+  padding-left: 50px;
+}
+
+.clue-box::before {
+  content: attr(data-num);
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  background: var(--crimson);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 13px;
+  font-family: 'Cinzel', serif;
+}
+
+/* ===== TESTIMONIES ===== */
+.testimony-box {
+  background: linear-gradient(135deg, #f0fff0, #f8fff8);
+  border: 1px solid #90ee90;
+  padding: 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+}
+
+.testimony-speaker {
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+  color: var(--crimson);
+  margin-bottom: 6px;
+}
+
+/* ===== QUIZ OPTIONS ===== */
+.quiz-section {
+  background: linear-gradient(135deg, #fff8f0, #f0f8ff);
+  border: 2px solid var(--gold);
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 25px;
+}
+
+.quiz-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  color: var(--crimson);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.quiz-question {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: var(--ink);
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 12px;
+}
+
+.quiz-option {
+  background: white;
+  border: 2px solid #ddd;
+  padding: 16px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.quiz-option:hover {
+  border-color: var(--crimson);
+  background: #fff8f8;
+  transform: translateX(5px);
+}
+
+.quiz-option.selected {
+  border-color: var(--crimson);
+  background: #fff0f0;
+  box-shadow: 0 4px 12px rgba(139,0,0,0.15);
+}
+
+.quiz-option .opt-letter {
+  width: 32px;
+  height: 32px;
+  background: var(--crimson);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.quiz-option .opt-text {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* ===== TABLES ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+th {
+  background: var(--crimson);
+  color: white;
+  padding: 14px;
+  text-align: left;
+  font-family: 'Cinzel', serif;
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+td {
+  padding: 14px;
+  border-bottom: 1px solid #eee;
+}
+
+tr:hover td {
+  background: #fafafa;
+}
+
+.checkbox-cell {
+  text-align: center;
+}
+
+.checkbox-cell input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--crimson);
+}
+
+/* ===== GROUP HEADER ===== */
+.group-header {
+  background: linear-gradient(90deg, var(--crimson), #a52a2a);
+  color: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 20px rgba(139,0,0,0.3);
+}
+
+.group-header small {
+  display: block;
+  font-size: 14px;
+  opacity: 0.8;
+  margin-top: 6px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0;
+}
+
+/* ===== SYNOPSIS ===== */
+.synopsis {
+  background: linear-gradient(135deg, #fff8f0, #f0f8ff);
+  border: 2px solid var(--crimson);
+  padding: 30px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+}
+
+/* ===== HANDOUT & ANSWERS ===== */
+.handout-section {
+  background: #f8f8f8;
+  border: 2px solid #333;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.answer-key {
+  background: linear-gradient(135deg, #ffe4e1, #fff0f0);
+  border: 2px solid #dc143c;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+/* ===== MENTIMETER EXPORT ===== */
+.menti-section {
+  background: linear-gradient(135deg, #e8f4f8, #f0f8ff);
+  border: 2px solid #4682b4;
+  border-radius: 12px;
+  padding: 30px;
+  margin-top: 20px;
+}
+
+.menti-title {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  color: #2c5f7c;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.menti-question {
+  background: white;
+  border-left: 4px solid #4682b4;
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  border-radius: 0 8px 8px 0;
+  font-size: 15px;
+}
+
+.menti-question .q-num {
+  font-weight: bold;
+  color: #4682b4;
+  margin-right: 8px;
+}
+
+.copy-btn {
+  background: #4682b4;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 8px;
+  font-family: 'Cinzel', serif;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: all 0.3s;
+}
+
+.copy-btn:hover {
+  background: #2c5f7c;
+  transform: translateY(-2px);
+}
+
+/* ===== HIDDEN ===== */
+.hidden { display: none !important; }
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  body { background: white; }
+  .nav-bar, .login-screen { display: none; }
+  .section { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-title">TURANDOT</div>
+  <div class="login-subtitle">A Cross-Cultural Detective Mystery</div>
+
+  <div class="login-card fade-in">
+    <h2>🎭 Enter the Palace</h2>
+    <div class="input-group">
+      <label for="playerName">Your Name / 你的名字</label>
+      <input type="text" id="playerName" placeholder="e.g., Alice Chen" autocomplete="name">
+    </div>
+    <div class="input-group">
+      <label for="studentID">Student ID (Optional) / 学号（选填）</label>
+      <input type="text" id="studentID" placeholder="e.g., 2026XXXXX">
+    </div>
+    <button class="btn-start" onclick="enterGame()">BEGIN INVESTIGATION 🔍</button>
+    <div class="welcome-msg">HKUST(GZ) Cross-Cultural Communication Orientation</div>
+  </div>
+</div>
+
+<!-- ===== GAME CONTAINER ===== -->
+<div id="gameContainer" class="hidden">
+
+<div class="game-header">
+  <div class="game-title">🔍 TURANDOT</div>
+  <div class="game-subtitle">Cross-Cultural Detective Game | HKUST(GZ) Orientation</div>
+  <div class="player-badge" id="playerDisplay">Detective: Guest</div>
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn active" onclick="showSection('synopsis')">📖 Synopsis</button>
+  <button class="nav-btn" onclick="showSection('group1')">Group 1</button>
+  <button class="nav-btn" onclick="showSection('group2')">Group 2</button>
+  <button class="nav-btn" onclick="showSection('group3')">Group 3</button>
+  <button class="nav-btn" onclick="showSection('group4')">Group 4</button>
+  <button class="nav-btn" onclick="showSection('group5')">Group 5</button>
+  <button class="nav-btn" onclick="showSection('group6')">Group 6</button>
+  <button class="nav-btn special" onclick="showSection('handout')">📋 Handout</button>
+  <button class="nav-btn special" onclick="showSection('answers')">🔑 Answers</button>
+  <button class="nav-btn special" onclick="showSection('menti')">📊 Mentimeter</button>
+</div>
+
+<!-- SYNOPSIS -->
+<div id="synopsis" class="content-section">
+  <div class="synopsis">
+    <div class="section-title">📖 Story Synopsis</div>
+    <p style="font-family: 'Playfair Display', serif; font-size: 17px; line-height: 1.9; color: #333;">
+      In ancient Beijing, the cold-hearted Princess <b>Turandot</b> poses three riddles to all suitors. Answer correctly, and you may marry her; fail, and face execution. After the Persian Prince is put to death, the Tartar Prince <b>Calaf</b>—captivated by Turandot's beauty—decides to challenge the riddles against the warnings of his father <b>Timur</b> and the slave girl <b>Liù</b>. Calaf solves all three, but Turandot refuses to honor her promise. Calaf offers a deadly wager: if she discovers his name before dawn, he will die. Turandot orders the city to stay awake. Yet Liù sacrifices herself to protect Calaf. Ultimately, Turandot is moved by Calaf's love, and her heart melts.
+    </p>
+    <div style="margin-top: 25px; padding: 20px; background: white; border-radius: 10px; border-left: 4px solid var(--gold);">
+      <div style="font-family: 'Cinzel', serif; font-size: 16px; color: var(--crimson); margin-bottom: 12px;">🌏 Cross-Cultural Themes</div>
+      <ul style="margin: 0; padding-left: 20px; line-height: 2;">
+        <li><b>Orientalism:</b> The "Eastern Princess" as a Western fantasy</li>
+        <li><b>Gender & Power:</b> Women as prizes, rulers, and sacrificial figures</li>
+        <li><b>Cultural Loyalty:</b> How different cultures interpret sacrifice</li>
+        <li><b>Love as Bridge:</b> Can romance overcome cultural misunderstanding?</li>
+        <li><b>Cultural Appropriation:</b> Puccini's use of Chinese music in an Italian opera</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP 1 -->
+<div id="group1" class="content-section hidden">
+  <div class="group-header">Group 1: The Persian Prince's Last Night<br><small>Music: Overture — Listen for the Orientalist brass motifs</small></div>
+
+  <div class="music-note"><span class="note-icon">🎵</span> <b>Listening Guide:</b> Overture (Orchestral) — Pay attention to the brass instruments playing the "death motive" with flattened thirds, a common Orientalist musical trope.</div>
+
+  <div class="section">
+    <div class="section-title">1. Background</div>
+    <p>On the eve of challenging Turandot's riddles, the Persian Prince spoke with a mysterious woman in the palace gardens. The next morning, he was found executed. <b>Who leaked the riddle answers? Or did someone deliberately mislead him?</b></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Characters</div>
+    <div class="character-grid">
+      <div class="character-card">
+        <div class="character-name">Princess Turandot</div>
+        <div class="character-role">Primary Suspect</div>
+        <div>A cold-hearted Chinese princess who tests suitors with riddles. She claims her cruelty stems from ancestral trauma of foreign invasion.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Emperor Altoum</div>
+        <div class="character-role">Witness</div>
+        <div>Turandot's father. Kind but powerless to change his daughter's will.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Ping, Pang, Pong</div>
+        <div class="character-role">Ministers / Witnesses</div>
+        <div>Three ministers with different political stances on Turandot's marriage.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">The Persian Prince</div>
+        <div class="character-role">Victim</div>
+        <div>A failed suitor, last seen in the palace gardens before his execution.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">The Mysterious Woman</div>
+        <div class="character-role">Unknown</div>
+        <div>An unidentified woman who had a secret conversation with the Persian Prince.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Locations</div>
+    <p><b>Palace Gardens:</b> Where the Persian Prince was last seen. A dried well was found with a fragment of a <b>jasmine-scented sachet</b> beside it.<br><br>
+    <b>Execution Ground:</b> East of the palace, where failed suitors are executed.<br><br>
+    <b>Ministers' Chamber:</b> Where Ping, Pang, and Pong discuss state affairs. A map marks routes of visiting envoys.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Clues</div>
+    <div class="clue-box" data-num="1">The jasmine sachet fragment beside the well is embroidered with the character "Liu" (柳).</div>
+    <div class="clue-box" data-num="2">Minister Ping's diary states: "The Persian Prince was overconfident. He never knew Turandot's riddles came from her grandmother's Persian books."</div>
+    <div class="clue-box" data-num="3">Minister Pang's servant saw a masked woman enter the gardens at midnight.</div>
+    <div class="clue-box" data-num="4">Minister Pong advocates abolishing the death penalty, but Turandot insists tradition must be upheld.</div>
+    <div class="clue-box" data-num="5">Among the Persian Prince's belongings: an unsent letter reading, "I already know the answers. Tomorrow I shall succeed."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Testimonies</div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Emperor Altoum</div>
+      "I begged my daughter to show mercy, but she believes her cruelty protects our kingdom from foreign domination."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Ping</div>
+      "The Persian Prince was arrogant. He thought wealth could buy any answer in this world."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Pang</div>
+      "I saw a figure in white near the well at midnight. I thought it was a ghost."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Pong</div>
+      "The princess has never smiled since her ancestor's kingdom fell. She sees every foreign suitor as a potential invader."
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Deduction Sheet</div>
+    <table>
+      <tr><th>Suspect</th><th>Motive</th><th>Opportunity</th><th>Evidence</th><th>Guilty?</th></tr>
+      <tr><td>Princess Turandot</td><td>Protects kingdom from foreigners</td><td>Controls all riddle answers</td><td>Refuses to change the rules</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Ping</td><td>Political stability</td><td>Access to Persian knowledge</td><td>Mentioned Persian books</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>The Mysterious Woman (Liù)</td><td>Protect someone else</td><td>Seen near the well</td><td>Jasmine sachet fragment</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Emperor Altoum</td><td>Wants grandchildren</td><td>None at night</td><td>Begged for mercy</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+    </table>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-section">
+    <div class="quiz-title">🎯 Group 1 Quiz</div>
+    <div class="quiz-question">Who is primarily responsible for the Persian Prince's fate?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 1, 'A')"><span class="opt-letter">A</span><span class="opt-text">Princess Turandot — her cruel system of riddles is designed to eliminate foreigners</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 1, 'B')"><span class="opt-letter">B</span><span class="opt-text">Minister Ping — he had access to Persian knowledge and may have misled the Prince</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 1, 'C')"><span class="opt-letter">C</span><span class="opt-text">Liù (the mysterious woman) — the jasmine sachet proves she was at the scene</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 1, 'D')"><span class="opt-letter">D</span><span class="opt-text">The cultural/political system itself — no single person is guilty; the system of exclusion is</span></div>
+    </div>
+    <div class="quiz-question" style="margin-top:25px;">How does Turandot's behavior reflect Orientalist stereotypes?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 1, 'E')"><span class="opt-letter">E</span><span class="opt-text">She embodies the "dragon lady" stereotype — beautiful but deadly, mysterious and cruel</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 1, 'F')"><span class="opt-letter">F</span><span class="opt-text">She challenges the stereotype by showing genuine emotion and complexity</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 1, 'G')"><span class="opt-letter">G</span><span class="opt-text">Both — she initially fits the stereotype but later reveals human vulnerability</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP 2 -->
+<div id="group2" class="content-section hidden">
+  <div class="group-header">Group 2: The Mystery of Liù's Devotion<br><small>Music: "Signore, ascolta!" — Listen for the descending chromatic scale symbolizing submission or resistance</small></div>
+
+  <div class="music-note"><span class="note-icon">🎵</span> <b>Listening Guide:</b> "Signore, ascolta!" (Liù's Aria) — Notice the descending chromatic passages when she sings "he smiled at me." Does this represent submission or quiet resistance?</div>
+
+  <div class="section">
+    <div class="section-title">1. Background</div>
+    <p>The slave girl Liù shows extraordinary loyalty to Timur. When Calaf decides to challenge the riddles, Liù desperately tries to stop him. She seems to know secrets unknown to others. <b>What is Liù's true identity? Why is she willing to sacrifice herself?</b></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Characters</div>
+    <div class="character-grid">
+      <div class="character-card">
+        <div class="character-name">Liù</div>
+        <div class="character-role">Slave Girl / Central Mystery</div>
+        <div>Timur's servant of low status but extraordinary courage. She claims she follows Timur because "he once smiled at me."</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Timur</div>
+        <div class="character-role">Exiled King</div>
+        <div>The exiled Tartar king, Calaf's father, blind and dependent on Liù's care.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Prince Calaf</div>
+        <div class="character-role">Witness</div>
+        <div>Timur's son, captivated by Turandot's beauty, determined to win her heart.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Old Palace Nurse</div>
+        <div class="character-role">Key Witness</div>
+        <div>Has served in the palace for 40 years and knows many secrets.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Tartar Guard</div>
+        <div class="character-role">Witness</div>
+        <div>An old soldier who followed Timur into exile in Beijing.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Locations</div>
+    <p><b>Exiles' Camp:</b> The worn tent where Timur and Liù stay. Inside is an old dagger inlaid with gems.<br><br>
+    <b>Palace Side Hall:</b> Where Turandot lived as a child. On the wall hangs a portrait of her mother—a Persian princess.<br><br>
+    <b>Suburban Temple:</b> Where Liù often prays. The monks record that she always prays for "a prince far away."</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Clues</div>
+    <div class="clue-box" data-num="1">The old dagger bears the Tartar royal emblem, but the handle has a small inscription: "To my love — T."</div>
+    <div class="clue-box" data-num="2">The plaque below Turandot's mother's portrait reads: "A princess from Persia, died in childbirth, leaving one daughter."</div>
+    <div class="clue-box" data-num="3">Temple prayer records show Liù first came 15 years ago — the same year Turandot was born.</div>
+    <div class="clue-box" data-num="4">The Old Nurse recalls: "There was a young maid beside the Persian princess. She disappeared when the kingdom fell."</div>
+    <div class="clue-box" data-num="5">The Tartar Guard reveals: "The prince once saved a drowning girl as a child. She had a butterfly-shaped birthmark on her wrist."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Testimonies</div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Liù</div>
+      "My prince, do not risk your life! I could not bear to see you end like the Persian Prince. I have already lost everything once."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Timur</div>
+      "Liù has been with me since she was a child. She is like a daughter to me, though I know nothing of her family."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Old Palace Nurse</div>
+      "The Persian princess had a kind heart. She would never have approved of Turandot's cruelty. She loved this land but feared its traditions."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Tartar Guard</div>
+      "Prince Calaf has always been reckless. But that girl Liù—she watches him with eyes full of memories."
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Deduction Sheet</div>
+    <table>
+      <tr><th>Question</th><th>Evidence</th><th>True?</th></tr>
+      <tr><td>Liù is a lost princess</td><td>Connected to Persian princess's maid</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Liù knew Calaf before Beijing</td><td>Butterfly birthmark, saved from drowning</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Turandot and Liù are half-sisters</td><td>Same age, both connected to Persian royalty</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Liù's sacrifice is about romantic love</td><td>"He smiled at me" — gratitude, not romance</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-section">
+    <div class="quiz-title">🎯 Group 2 Quiz</div>
+    <div class="quiz-question">What is Liù's true relationship to the royal families?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 2, 'A')"><span class="opt-letter">A</span><span class="opt-text">She is the daughter of the Persian princess's maid, connected to royalty through service</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 2, 'B')"><span class="opt-letter">B</span><span class="opt-text">She is a lost Persian princess herself, hiding her identity as a slave</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 2, 'C')"><span class="opt-letter">C</span><span class="opt-text">She is Turandot's half-sister, sharing the same Persian mother</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 2, 'D')"><span class="opt-letter">D</span><span class="opt-text">She is simply a loyal servant; her sacrifice reflects feudal duty, not hidden royalty</span></div>
+    </div>
+    <div class="quiz-question" style="margin-top:25px;">How does Liù's sacrifice reflect different cultural values?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 2, 'E')"><span class="opt-letter">E</span><span class="opt-text">It reflects Confucian loyalty — a servant's duty to her master transcends self-preservation</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 2, 'F')"><span class="opt-letter">F</span><span class="opt-text">It reflects Christian martyrdom — dying for love and faith</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 2, 'G')"><span class="opt-letter">G</span><span class="opt-text">It reflects Romantic individualism — choosing death for personal emotional reasons</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 2, 'H')"><span class="opt-letter">H</span><span class="opt-text">All of the above — her sacrifice resonates across multiple cultural frameworks</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP 3 -->
+<div id="group3" class="content-section hidden">
+  <div class="group-header">Group 3: The Three Riddles' Secret<br><small>Music: "In questa reggia" — Notice the shift from minor to major key when Turandot speaks of her ancestors</small></div>
+
+  <div class="music-note"><span class="note-icon">🎵</span> <b>Listening Guide:</b> "In questa reggia" (Turandot's Aria) — Listen for the modulation from minor to major when she mentions her ancestors, symbolizing how trauma is transformed into power.</div>
+
+  <div class="section">
+    <div class="section-title">1. Background</div>
+    <p>Turandot's three riddles have remained unsolved for a hundred years. Rumors say the answers are hidden in an ancient Persian legend. <b>How did Calaf solve all three without any preparation? Was it luck, wisdom, or did he already know the answers?</b></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Characters</div>
+    <div class="character-grid">
+      <div class="character-card">
+        <div class="character-name">Turandot</div>
+        <div class="character-role">Riddle Creator</div>
+        <div>Claims the riddles come from "ancestral wisdom."</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Calaf</div>
+        <div class="character-role">Riddle Solver</div>
+        <div>Solved all three riddles but is secretive about how.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Persian Scholar</div>
+        <div class="character-role">Key Witness</div>
+        <div>An exiled intellectual in Beijing, expert in ancient Persian literature.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Palace Librarian</div>
+        <div class="character-role">Witness</div>
+        <div>Manages the Forbidden Library, accessible only to the Emperor and Turandot.</div>
+      </div>
+      <div class="character-card">
+        <div class="character-name">Traveling Monk</div>
+        <div class="character-role">Witness</div>
+        <div>From the Silk Road, claims to have heard similar riddles in Persia.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Locations</div>
+    <p><b>Forbidden Library:</b> The palace's most secret collection. Only the Emperor and Turandot may enter. It supposedly holds ancient books Turandot's mother brought from Persia.<br><br>
+    <b>Persian Scholar's Residence:</b> Located in the foreign quarter, filled with manuscripts and scrolls from Persia.<br><br>
+    <b>Silk Road Inn:</b> Where the traveling monk stays. A tapestry depicts a Persian prince and a maiden of riddles.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Clues</div>
+    <div class="clue-box" data-num="1">The three answers — Hope, Blood, and Turandot — match exactly the riddles in Nizami's 1197 Persian epic <i>Haft Peykar</i>.</div>
+    <div class="clue-box" data-num="2">The Forbidden Library's borrowing record shows <i>Haft Peykar</i> was borrowed three months ago and returned with torn pages.</div>
+    <div class="clue-box" data-num="3">The Persian Scholar's manuscript includes an essay: "From Persia to China: The Cross-Cultural Transmission of Riddles."</div>
+    <div class="clue-box" data-num="4">The tapestry shows a maiden holding a scroll. On the scroll are three Chinese characters — the exact answers to the riddles.</div>
+    <div class="clue-box" data-num="5">On the night before the riddle challenge, Calaf wandered outside the city alone. Witnesses saw him speaking with a man in Persian dress.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Testimonies</div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Turandot</div>
+      "These riddles have protected me since I was sixteen. They are my shield against the world of men who see women as prizes."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Persian Scholar</div>
+      "The riddle of 'Turandot' is famous in Persian literature. Any educated Persian would know it. But how would a Tartar prince know?"
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Palace Librarian</div>
+      "The princess forbids anyone from reading her mother's books. She says they are cursed with foreign ideas."
+    </div>
+    <div class="testimony-box">
+      <div class="testimony-speaker">Traveling Monk</div>
+      "In my homeland, we tell stories of a princess who used riddles to test suitors. Her name was not Turandot, but the riddles were the same."
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Deduction Sheet</div>
+    <table>
+      <tr><th>Theory</th><th>Supporting Evidence</th><th>Against</th><th>Valid?</th></tr>
+      <tr><td>Calaf cheated</td><td>Met Persian scholar, torn book</td><td>Showed genuine emotion solving riddles</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Riddles are Persian origin</td><td>Nizami's poem, monk's testimony</td><td>Turandot claims Chinese ancestry</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Turandot wants to be defeated</td><td>Her mother's Persian heritage, her loneliness</td><td>She refuses to marry Calaf after he wins</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Riddles test cultural knowledge</td><td>Only those who know Persian literature can solve</td><td>Calaf is Tartar, not Persian</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-section">
+    <div class="quiz-title">🎯 Group 3 Quiz</div>
+    <div class="quiz-question">How did Calaf really solve the riddles?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 3, 'A')"><span class="opt-letter">A</span><span class="opt-text">He cheated — he met the Persian scholar and learned the answers beforehand</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 3, 'B')"><span class="opt-letter">B</span><span class="opt-text">He knew them through Silk Road cultural transmission — the riddles traveled across cultures</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 3, 'C')"><span class="opt-letter">C</span><span class="opt-text">Turandot wanted him to win — she secretly hoped for defeat</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 3, 'D')"><span class="opt-letter">D</span><span class="opt-text">It was pure luck — he guessed correctly without any prior knowledge</span></div>
+    </div>
+    <div class="quiz-question" style="margin-top:25px;">What does the Persian origin of the riddles suggest about cultural exchange?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 3, 'E')"><span class="opt-letter">E</span><span class="opt-text">Cultural boundaries are artificial — ideas travel, transform, and are reclaimed across borders</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 3, 'F')"><span class="opt-letter">F</span><span class="opt-text">It shows cultural appropriation — Turandot stole Persian culture to create her own power</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 3, 'G')"><span class="opt-letter">G</span><span class="opt-text">It proves the Silk Road was primarily a route for political domination, not cultural sharing</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP 4 -->
+<div id="group4" class="content-section hidden">
+  <div class="group-header">Group 4: The Night of the Name<br><small>Music: "Nessun dorma" — Listen to the crescendo on "Vincerò!" as sonic representation of male conquest</small></div>
+
+  <div class="music-note"><span class="note-icon">🎵</span> <b>Listening Guide:</b> "Nessun dorma" (Calaf's Aria) — The famous crescendo on "Vincerò!" (I shall win!) is a sonic representation of male triumph and conquest narrative.</div>
+
+  <div class="section">
+    <div class="section-title">1. Background</div>
+    <p>After Calaf solves the riddles, Turandot refuses to marry him. Calaf offers a deadly wager: if she discovers his name before dawn, he will die. Turandot orders arrests and torture. Yet Liù would rather be tortured than reveal Calaf's name. Eventually, Liù takes her own life. <b>What is Calaf's real name? Why is it worth Liù's life?</b></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Characters</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="character-name">Turandot</div><div class="character-role">Antagonist</div><div>Swears to discover Calaf's name at any cost.</div></div>
+      <div class="character-card"><div class="character-name">Calaf</div><div class="character-role">Protagonist</div><div>Calls himself "nameless" but is clearly of noble birth.</div></div>
+      <div class="character-card"><div class="character-name">Liù</div><div class="character-role">The Only One Who Knows</div><div>The only person who knows Calaf's true identity.</div></div>
+      <div class="character-card"><div class="character-name">Timur</div><div class="character-role">Witness</div><div>Heartbroken during Liù's torture, nearly reveals his son's name.</div></div>
+      <div class="character-card"><div class="character-name">Palace Executioner</div><div class="character-role">Witness</div><div>Carries out Turandot's orders but is shocked by Liù's strength.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Locations</div>
+    <p><b>Palace Dungeon:</b> Where Liù was tortured. The walls are covered with prisoners' last words.<br><br>
+    <b>Palace Square:</b> Where Calaf waits for dawn and sings "Nessun Dorma."<br><br>
+    <b>Timur's Tent:</b> Inside is an old banner embroidered with the full name of the Tartar royal house.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Clues</div>
+    <div class="clue-box" data-num="1">On the dungeon wall: "My name is Love and Death." The handwriting matches Liù's prayer records.</div>
+    <div class="clue-box" data-num="2">Calaf sings: "My name will vanish with the dawn, or shine with victory."</div>
+    <div class="clue-box" data-num="3">The old banner reads "Timur Calaf Khan Tartar," but one name in the middle has been deliberately sewn shut.</div>
+    <div class="clue-box" data-num="4">The Executioner reports: "The girl said at the last moment: 'My death is more valuable than his name.'"</div>
+    <div class="clue-box" data-num="5">Palace archives record: 15 years ago, when the Tartar kingdom fell, the young prince "disappeared." Turandot was born the same year.</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Testimonies</div>
+    <div class="testimony-box"><div class="testimony-speaker">Turandot</div>"I will know his name! I am the daughter of emperors. No secret can withstand my will."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Calaf</div>"My name is nothing. What matters is the love that makes me risk everything. If she learns my name, I die happy."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Liù (last words)</div>"Princess, you who are so cruel—love will conquer you too. My death is my final gift to him."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Executioner</div>"I have tortured many, but never one who smiled through the pain. She was not of this world."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Deduction Sheet</div>
+    <table>
+      <tr><th>Hypothesis</th><th>Evidence</th><th>Conclusion</th><th>Valid?</th></tr>
+      <tr><td>Calaf is the lost Tartar prince</td><td>Banner, palace records, Timur's identity</td><td>Royal bloodline confirmed</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Liù's sacrifice is about social class</td><td>Slave protecting master — feudal loyalty</td><td>Class hierarchy in action</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>The name represents identity &amp; power</td><td>Turandot wants control; Calaf wants love</td><td>Name = political weapon</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Calaf and Turandot are destined enemies</td><td>Tartar vs. Chinese royal lines</td><td>Cycle of vengeance</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-section">
+    <div class="quiz-title">🎯 Group 4 Quiz</div>
+    <div class="quiz-question">Why does Liù believe her death is more valuable than revealing Calaf's name?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 4, 'A')"><span class="opt-letter">A</span><span class="opt-text">Because revealing his name would mean his death — she dies to save his life</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 4, 'B')"><span class="opt-letter">B</span><span class="opt-text">Because his name represents the last hope for the Tartar people — political loyalty</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 4, 'C')"><span class="opt-letter">C</span><span class="opt-text">Because she is in love with him — romantic sacrifice</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 4, 'D')"><span class="opt-letter">D</span><span class="opt-text">All of the above — her sacrifice operates on multiple levels simultaneously</span></div>
+    </div>
+    <div class="quiz-question" style="margin-top:25px;">Compare Liù's sacrifice with other cultural narratives:</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 4, 'E')"><span class="opt-letter">E</span><span class="opt-text">Mulan (China) — filial sacrifice for family honor</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 4, 'F')"><span class="opt-letter">F</span><span class="opt-text">Antigone (Greece) — defying authority for familial duty</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 4, 'G')"><span class="opt-letter">G</span><span class="opt-text">Both — different cultures encode female sacrifice differently, but all honor selflessness</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP 5 -->
+<div id="group5" class="content-section hidden">
+  <div class="group-header">Group 5: The Transformation of Turandot<br><small>Music: Final Duet — Notice Turandot's vocal color change from metallic coldness to warm roundness</small></div>
+
+  <div class="music-note"><span class="note-icon">🎵</span> <b>Listening Guide:</b> Final Duet — Listen to how Turandot's voice changes from cold, metallic timbre to warm, rounded tone. This is the sonic embodiment of her emotional transformation.</div>
+
+  <div class="section">
+    <div class="section-title">1. Background</div>
+    <p>After Liù's death, Calaf reveals his identity and offers Turandot a choice: he will give up everything if she can rule with love rather than fear. In this moment, Turandot transforms. <b>What turns a cruel princess into a woman who understands love? Is this transformation genuine or strategic?</b></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Characters</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="character-name">Turandot</div><div class="character-role">The Transformed</div><div>For the first time after Liù's death, she shows confusion and vulnerability.</div></div>
+      <div class="character-card"><div class="character-name">Calaf</div><div class="character-role">The Catalyst</div><div>"Awakens" Turandot with a kiss — but is his method appropriate?</div></div>
+      <div class="character-card"><div class="character-name">Timur</div><div class="character-role">Skeptic</div><div>Grieves for Liù and questions whether his son's love is worth so much sacrifice.</div></div>
+      <div class="character-card"><div class="character-name">Ping, Pang, Pong</div><div class="character-role">Observers</div><div>Witness Turandot's transformation with different interpretations.</div></div>
+      <div class="character-card"><div class="character-name">Court Lady</div><div class="character-role">Witness</div><div>Has served Turandot since childhood and never seen her cry.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Locations</div>
+    <p><b>Palace Terrace:</b> Where Calaf kisses Turandot. From here, the entire city of Beijing and the distant Great Wall are visible.<br><br>
+    <b>Liù's Grave:</b> A simple temporary grave. Calaf asks Turandot to swear an oath here.<br><br>
+    <b>Turandot's Chamber:</b> Inside is a mirror. For the first time in years, Turandot looks at herself seriously.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Clues</div>
+    <div class="clue-box" data-num="1">Turandot whispers at Liù's death: "She understood love better than I do."</div>
+    <div class="clue-box" data-num="2">Calaf's kiss is described as "fire melting ice" — but melted ice becomes water, which can nourish or drown.</div>
+    <div class="clue-box" data-num="3">The Court Lady discovers Turandot practicing smiling alone in front of the mirror at midnight.</div>
+    <div class="clue-box" data-num="4">Minister Ping privately remarks: "The princess has finally learned politics — marriage consolidates power better than execution."</div>
+    <div class="clue-box" data-num="5">Minister Pang notices: "The princess looks at Calaf exactly as her mother once looked at the Persian prince."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Testimonies</div>
+    <div class="testimony-box"><div class="testimony-speaker">Turandot (after the kiss)</div>"I wept, and in my tears I felt something I had forbidden myself for twenty years. Is this weakness? Or is this what my mother felt?"</div>
+    <div class="testimony-box"><div class="testimony-speaker">Calaf</div>"I did not conquer her. I offered her a choice. That is the difference between a tyrant and a lover."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Court Lady</div>"The princess asked me, 'How does one smile without cruelty?' I did not know how to answer."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Ping</div>"Love or politics—whatever her reasons, the kingdom is safer with a married princess than with an executioner princess."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Deduction Sheet</div>
+    <table>
+      <tr><th>Interpretation</th><th>Evidence</th><th>Critique</th><th>Agree?</th></tr>
+      <tr><td>Genuine love transformation</td><td>First tears, mirror scene, mother's parallel</td><td>Too sudden; happens within minutes</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Political strategy</td><td>Ping's comment, marriage consolidates power</td><td>Ignores emotional breakdown evidence</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Stockholm Syndrome</td><td>Captive falls for captor after trauma</td><td>Reduces complex emotion to pathology</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Cultural assimilation</td><td>Foreign prince "conquers" Chinese princess</td><td>Colonial narrative interpretation</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-section">
+    <div class="quiz-title">🎯 Group 5 Quiz</div>
+    <div class="quiz-question">Is Turandot's transformation authentic?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 5, 'A')"><span class="opt-letter">A</span><span class="opt-text">Yes — her tears and the mirror scene prove genuine emotional breakthrough</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 5, 'B')"><span class="opt-letter">B</span><span class="opt-text">No — it is political strategy; marriage consolidates power better than execution</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 5, 'C')"><span class="opt-letter">C</span><span class="opt-text">Both — she genuinely transforms AND strategically benefits from marriage</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 5, 'D')"><span class="opt-letter">D</span><span class="opt-text">It is Stockholm Syndrome — a trauma response where the victim bonds with the captor</span></div>
+    </div>
+    <div class="quiz-question" style="margin-top:25px;">How does this ending reflect Western vs. Eastern views?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 5, 'E')"><span class="opt-letter">E</span><span class="opt-text">Western: love transforms; Eastern: duty and gradual understanding — the opera favors Western individualism</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 5, 'F')"><span class="opt-letter">F</span><span class="opt-text">Eastern: collective harmony over individual desire — Turandot's marriage restores social order</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 5, 'G')"><span class="opt-letter">G</span><span class="opt-text">The ending is deliberately ambiguous — it resists simple East/West categorization</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- GROUP 6 -->
+<div id="group6" class="content-section hidden">
+  <div class="group-header">Group 6: The Jasmine Flower's Secret<br><small>Music: Jasmine Flower Chorus — Notice how Puccini embeds the pentatonic melody within Western harmonic structure</small></div>
+
+  <div class="music-note"><span class="note-icon">🎵</span> <b>Listening Guide:</b> Jasmine Flower Chorus — Pay attention to how Puccini embeds the Chinese pentatonic melody within a Western major-minor harmonic framework. Is this fusion or domination?</div>
+
+  <div class="section">
+    <div class="section-title">1. Background</div>
+    <p>When Puccini composed <i>Turandot</i>, he extensively used the melody of the Chinese folk song "Jasmine Flower." Yet this opera was written by an Italian about China. <b>What does the jasmine flower symbolize? Is Puccini's understanding authentic or imagined? Is this opera cultural exchange or Orientalism?</b></p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">2. Characters</div>
+    <div class="character-grid">
+      <div class="character-card"><div class="character-name">Giacomo Puccini</div><div class="character-role">Composer</div><div>Italian composer who never visited China; learned Chinese music through a music box and written sources.</div></div>
+      <div class="character-card"><div class="character-name">Chinese Music Scholar</div><div class="character-role">Analyst</div><div>Studies the historical evolution of "Jasmine Flower" and notes Puccini used a Westernized version.</div></div>
+      <div class="character-card"><div class="character-name">Italian Opera Director</div><div class="character-role">Defender</div><div>Insists Puccini's understanding of Chinese culture was "full of love and respect."</div></div>
+      <div class="character-card"><div class="character-name">Postcolonial Theorist</div><div class="character-role">Critic</div><div>Argues <i>Turandot</i> is Western "imaginative possession" of the East.</div></div>
+      <div class="character-card"><div class="character-name">Cross-Cultural Musicologist</div><div class="character-role">Mediator</div><div>Attempts to find balance between appreciation and appropriation.</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">3. Locations</div>
+    <p><b>Puccini's Study:</b> In Torre del Lago, Italy. On his desk sits a music box from China that plays "Jasmine Flower."<br><br>
+    <b>Temple of Heaven, Beijing:</b> Where "Jasmine Flower" originally spread. Local elders sing a version very different from Puccini's.<br><br>
+    <b>La Scala, Milan:</b> Where <i>Turandot</i> premiered in 1926. Puccini had already passed away and never heard the complete work.</p>
+  </div>
+
+  <div class="section">
+    <div class="section-title">4. Clues</div>
+    <div class="clue-box" data-num="1">Puccini's music box contains a version of "Jasmine Flower" adapted by a French musicologist in the 1880s, already harmonized with Western chords.</div>
+    <div class="clue-box" data-num="2">In <i>Turandot</i>, the Jasmine Flower melody appears only in "Chinese" scenes. Turandot herself never sings it.</div>
+    <div class="clue-box" data-num="3">Beijing elders say: "For us, Jasmine Flower expresses love. In that foreign opera, it sounds sad."</div>
+    <div class="clue-box" data-num="4">Puccini wrote: "I want Europeans to hear the voice of the East, even if filtered through my imagination."</div>
+    <div class="clue-box" data-num="5">The postcolonial scholar asks: "Puccini makes Chinese people sing in Italian, with a Western orchestra playing Chinese melodies — is this translation or appropriation?"</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">5. Testimonies</div>
+    <div class="testimony-box"><div class="testimony-speaker">Puccini (from letters)</div>"I have never been to China, but I feel I know its soul through its music. Is this arrogance or empathy? I cannot tell."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Chinese Music Scholar</div>"The 'Jasmine Flower' Puccini used is already a Westernized version. The real song has a different spirit—lighter, more playful."</div>
+    <div class="testimony-box"><div class="testimony-speaker">Italian Opera Director</div>"Puccini loved China. He spent years studying its music. How can love be called appropriation?"</div>
+    <div class="testimony-box"><div class="testimony-speaker">Postcolonial Theorist</div>"The opera presents China as exotic, cruel, and mysterious. Turandot is not a real Chinese woman—she is Europe's fantasy of the East."</div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">6. Deduction Sheet</div>
+    <table>
+      <tr><th>Position</th><th>Argument</th><th>Counter-argument</th><th>Your Stand?</th></tr>
+      <tr><td>Cultural Appreciation</td><td>Puccini studied Chinese music with respect</td><td>Never visited China; used secondhand sources</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Orientalism</td><td>Exoticizes China; Turandot is Western fantasy</td><td>Opera also critiques Turandot's cruelty</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Creative Translation</td><td>All art borrows across cultures</td><td>Power imbalance: West borrowing from East</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+      <tr><td>Hybrid Identity</td><td>Turandot is Persian and Chinese—already hybrid</td><td>Hybridity can still reinforce stereotypes</td><td class="checkbox-cell"><input type="checkbox"></td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-section">
+    <div class="quiz-title">🎯 Group 6 Quiz</div>
+    <div class="quiz-question">Is Puccini's <i>Turandot</i> cultural exchange or cultural appropriation?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 6, 'A')"><span class="opt-letter">A</span><span class="opt-text">Cultural exchange — he genuinely admired Chinese music and tried to share it with Europe</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 6, 'B')"><span class="opt-letter">B</span><span class="opt-text">Cultural appropriation — he exoticized China without understanding its real culture</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 6, 'C')"><span class="opt-letter">C</span><span class="opt-text">Both — appreciation and appropriation can coexist in the same work</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 6, 'D')"><span class="opt-letter">D</span><span class="opt-text">It depends on who is watching — Chinese audiences may read it differently than European ones</span></div>
+    </div>
+    <div class="quiz-question" style="margin-top:25px;">Can a work be both Orientalist and a masterpiece?</div>
+    <div class="quiz-options">
+      <div class="quiz-option" onclick="selectOption(this, 6, 'E')"><span class="opt-letter">E</span><span class="opt-text">Yes — artistic excellence and political problems are not mutually exclusive</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 6, 'F')"><span class="opt-letter">F</span><span class="opt-text">No — if a work reinforces harmful stereotypes, it cannot be truly great art</span></div>
+      <div class="quiz-option" onclick="selectOption(this, 6, 'G')"><span class="opt-letter">G</span><span class="opt-text">We must judge art within its historical context — Puccini was a product of his time</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- HANDOUT -->
+<div id="handout" class="content-section hidden">
+  <div class="handout-section">
+    <div style="text-align:center; margin-bottom:30px;">
+      <div class="game-title">📋 Student Handout</div>
+      <div class="game-subtitle">Cross-Cultural Detective Game: Turandot</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🎯 Learning Objectives</div>
+      <ol style="line-height:2; padding-left:20px;">
+        <li>Develop cross-cultural analytical skills through analyzing the plot, characters, and music of <i>Turandot</i>.</li>
+        <li>Apply critical thinking to evaluate behaviors and motivations from different cultural perspectives.</li>
+        <li>Practice English expression and academic argumentation in group discussions.</li>
+        <li>Understand core concepts: Orientalism, gender &amp; power, cultural appropriation, cross-cultural communication.</li>
+      </ol>
+    </div>
+
+    <div class="section">
+      <div class="section-title">⏱️ Time Schedule</div>
+      <table>
+        <tr><th>Phase</th><th>Duration</th><th>Activity</th></tr>
+        <tr><td>Introduction</td><td>10 min</td><td>Listen to music excerpt; read synopsis</td></tr>
+        <tr><td>Investigation</td><td>20 min</td><td>Read clues and testimonies; fill deduction sheet</td></tr>
+        <tr><td>Discussion</td><td>15 min</td><td>Group discussion in English; reach conclusion</td></tr>
+        <tr><td>Quiz</td><td>10 min</td><td>Answer multiple-choice questions</td></tr>
+        <tr><td>Presentation</td><td>10 min</td><td>Present findings to class; cross-cultural analysis</td></tr>
+        <tr><td>Reflection</td><td>5 min</td><td>Individual written reflection (50 words)</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📝 Discussion Questions</div>
+      <div style="line-height:2;">
+        <b>Core Questions:</b><br>
+        1. Is Turandot's cruelty innate or a product of her environment?<br>
+        2. Is Liù's sacrifice voluntary or coerced?<br>
+        3. Is Calaf's method—"conquering" Turandot through love—appropriate?<br>
+        4. Is Puccini's portrayal of Chinese culture respectful or misguided?<br><br>
+        <b>Extension Questions:</b><br>
+        5. If you were Turandot, how would you handle Calaf's challenge?<br>
+        6. In cross-cultural communication, where is the line between "understanding" and "misreading"?<br>
+        7. Can we separate artistic beauty from political problems in cross-cultural works?
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">🎓 Assessment Rubric</div>
+      <table>
+        <tr><th>Criterion</th><th>Excellent (4)</th><th>Good (3)</th><th>Satisfactory (2)</th><th>Needs Improvement (1)</th></tr>
+        <tr><td>Evidence Analysis</td><td>Uses all clues logically</td><td>Uses most clues with minor gaps</td><td>Some logical errors</td><td>Illogical reasoning</td></tr>
+        <tr><td>Cross-Cultural Insight</td><td>Deep analysis of Orientalism/gender/power</td><td>Good analysis with some depth</td><td>Basic cultural awareness</td><td>Superficial or missing</td></tr>
+        <tr><td>English Expression</td><td>Fluent, academic, persuasive</td><td>Clear with minor errors</td><td>Understandable but basic</td><td>Hard to follow</td></tr>
+        <tr><td>Team Collaboration</td><td>All members contribute equally</td><td>Most members participate</td><td>Uneven participation</td><td>Minimal collaboration</td></tr>
+      </table>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📚 Key Vocabulary</div>
+      <table>
+        <tr><th>Term</th><th>Definition</th></tr>
+        <tr><td>Orientalism</td><td>Western representation of the East as exotic, backward, or mysterious (Said)</td></tr>
+        <tr><td>Cultural Appropriation</td><td>Adopting elements of a minority culture by a dominant culture</td></tr>
+        <tr><td>Gender &amp; Power</td><td>How gender roles reflect and reinforce power structures</td></tr>
+        <tr><td>Cross-Cultural Communication</td><td>Exchange of information between people from different cultures</td></tr>
+        <tr><td>Stockholm Syndrome</td><td>Psychological response where hostages bond with captors</td></tr>
+        <tr><td>Agency</td><td>The capacity to act independently and make free choices</td></tr>
+        <tr><td>Pentatonic Scale</td><td>A five-note musical scale common in Chinese and other non-Western musics</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ANSWERS -->
+<div id="answers" class="content-section hidden">
+  <div class="answer-key">
+    <div style="text-align:center; margin-bottom:30px;">
+      <div class="game-title">🔑 Answer Key</div>
+      <div class="game-subtitle">For Instructor Use Only</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Group 1: The Persian Prince's Last Night</div>
+      <p><b>Key Insight:</b> No single person is "guilty" in a traditional sense. The Persian Prince's fate is the result of a system (the riddle challenge) designed to eliminate foreign suitors. The jasmine sachet points to Liù, who may have tried to warn him. The true "culprit" is the cultural/political system of exclusion.</p>
+      <p><b>Cross-Cultural:</b> Turandot embodies the Orientalist "dragon lady" stereotype—beautiful but deadly, representing Western fears of the mysterious East.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Group 2: The Mystery of Liù's Devotion</div>
+      <p><b>Key Insight:</b> Liù is likely connected to Persian royalty through her mother (the Persian princess's maid). She knew Calaf from childhood. Her sacrifice is driven by gratitude and loyalty, not romantic love.</p>
+      <p><b>Cross-Cultural:</b> Liù represents the faithful servant archetype found across cultures, but her agency complicates simple readings of class oppression.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Group 3: The Three Riddles' Secret</div>
+      <p><b>Key Insight:</b> The riddles come from Persian literature (Nizami's <i>Haft Peykar</i>). Calaf likely knew them through Silk Road cultural transmission. Turandot's "Chinese" riddles are actually Persian, highlighting cultural hybridity.</p>
+      <p><b>Cross-Cultural:</b> "Pure" cultural boundaries are artificial—ideas travel, transform, and are reclaimed.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Group 4: The Night of the Name</div>
+      <p><b>Key Insight:</b> Calaf's name represents royal identity. Liù protects it because revealing it would mean his death AND it represents the last hope for the Tartar people. Her sacrifice transcends personal love.</p>
+      <p><b>Cross-Cultural:</b> Compare with Mulan (filial sacrifice), Antigone (familial duty)—different cultures encode female sacrifice differently.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Group 5: The Transformation of Turandot</div>
+      <p><b>Key Insight:</b> Open to interpretation. Evidence supports both genuine transformation and political strategy. The kiss as "melting ice" can be read as romantic or problematic.</p>
+      <p><b>Cross-Cultural:</b> Western narratives frame love as transformative; Chinese narratives emphasize duty. The ending is ambiguous by design.</p>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Group 6: The Jasmine Flower's Secret</div>
+      <p><b>Key Insight:</b> Puccini's use of "Jasmine Flower" is both appreciation and appropriation. He admired Chinese music but worked with a Westernized version. The opera reflects 1920s European imagination of China.</p>
+      <p><b>Cross-Cultural:</b> The key question is not "good or bad" but "what power dynamics shape how cultures represent each other?"</p>
+    </div>
+  </div>
+</div>
+
+<!-- MENTIMETER EXPORT -->
+<div id="menti" class="content-section hidden">
+  <div class="menti-section">
+    <div class="menti-title">📊 Mentimeter Question List</div>
+    <p style="text-align:center; color:#666; margin-bottom:25px;">Copy these questions into Mentimeter to collect student responses and reactions</p>
+
+    <div class="menti-question"><span class="q-num">Q1.</span> <b>Word Cloud:</b> What is the FIRST word that comes to mind when you hear "Turandot"?</div>
+    <div class="menti-question"><span class="q-num">Q2.</span> <b>Multiple Choice:</b> Who is MOST responsible for the Persian Prince's fate?<br>&nbsp;&nbsp;&nbsp;&nbsp;A) Turandot &nbsp; B) Ping &nbsp; C) The system itself &nbsp; D) Liù</div>
+    <div class="menti-question"><span class="q-num">Q3.</span> <b>Scale (1-5):</b> How much do you agree: "Turandot is a victim of her culture, not a villain."</div>
+    <div class="menti-question"><span class="q-num">Q4.</span> <b>Multiple Choice:</b> What is Liù's TRUE motivation for sacrifice?<br>&nbsp;&nbsp;&nbsp;&nbsp;A) Romantic love &nbsp; B) Feudal loyalty &nbsp; C) Political strategy &nbsp; D) All of the above</div>
+    <div class="menti-question"><span class="q-num">Q5.</span> <b>Open-ended:</b> In ONE sentence, why do you think Turandot created the riddles?</div>
+    <div class="menti-question"><span class="q-num">Q6.</span> <b>Scale (1-5):</b> How much do you agree: "Calaf's method of 'conquering' Turandot through love is problematic."</div>
+    <div class="menti-question"><span class="q-num">Q7.</span> <b>Multiple Choice:</b> Is Turandot's transformation at the end genuine?<br>&nbsp;&nbsp;&nbsp;&nbsp;A) Yes — genuine love &nbsp; B) No — political strategy &nbsp; C) Both &nbsp; D) Stockholm Syndrome</div>
+    <div class="menti-question"><span class="q-num">Q8.</span> <b>Word Cloud:</b> What emotion did you feel MOST strongly during Liù's death scene?</div>
+    <div class="menti-question"><span class="q-num">Q9.</span> <b>Multiple Choice:</b> Is Puccini's <i>Turandot</i> cultural exchange or appropriation?<br>&nbsp;&nbsp;&nbsp;&nbsp;A) Exchange &nbsp; B) Appropriation &nbsp; C) Both &nbsp; D) Depends on perspective</div>
+    <div class="menti-question"><span class="q-num">Q10.</span> <b>Open-ended:</b> What is ONE thing you learned about cross-cultural communication from this game?</div>
+    <div class="menti-question"><span class="q-num">Q11.</span> <b>Scale (1-5):</b> How would you rate the difficulty of this detective game?</div>
+    <div class="menti-question"><span class="q-num">Q12.</span> <b>Open-ended:</b> If you could rewrite the ending of <i>Turandot</i>, what would happen?</div>
+
+    <div style="text-align:center; margin-top:30px;">
+      <button class="copy-btn" onclick="copyMenti()">📋 Copy All Questions</button>
+      <div id="copyMsg" style="margin-top:10px; color:#2d5a3d; font-size:13px; display:none;">✅ Copied to clipboard!</div>
+    </div>
+  </div>
+</div>
+
+<!-- JAVASCRIPT -->
+<script>
+let playerName = "";
+let playerID = "";
+
+function enterGame() {
+  const nameInput = document.getElementById('playerName').value.trim();
+  if (!nameInput) {
+    alert("Please enter your name to begin the investigation!");
+    return;
+  }
+  playerName = nameInput;
+  playerID = document.getElementById('studentID').value.trim();
+
+  document.getElementById('loginScreen').classList.add('hidden');
+  document.getElementById('gameContainer').classList.remove('hidden');
+  document.getElementById('playerDisplay').textContent = "Detective: " + playerName;
+}
+
+function showSection(id) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+function selectOption(element, group, choice) {
+  // Remove selected from siblings
+  const parent = element.parentElement;
+  parent.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('selected'));
+  element.classList.add('selected');
+
+  // Store answer (could be sent to server in future)
+  console.log("Group " + group + " — " + playerName + " selected: " + choice);
+}
+
+function copyMenti() {
+  const questions = [
+    "Q1. Word Cloud: What is the FIRST word that comes to mind when you hear 'Turandot'?",
+    "Q2. Multiple Choice: Who is MOST responsible for the Persian Prince's fate? (A) Turandot (B) Ping (C) The system itself (D) Liù",
+    "Q3. Scale (1-5): How much do you agree: 'Turandot is a victim of her culture, not a villain.'",
+    "Q4. Multiple Choice: What is Liù's TRUE motivation for sacrifice? (A) Romantic love (B) Feudal loyalty (C) Political strategy (D) All of the above",
+    "Q5. Open-ended: In ONE sentence, why do you think Turandot created the riddles?",
+    "Q6. Scale (1-5): How much do you agree: 'Calaf's method of conquering Turandot through love is problematic.'",
+    "Q7. Multiple Choice: Is Turandot's transformation at the end genuine? (A) Yes (B) No (C) Both (D) Stockholm Syndrome",
+    "Q8. Word Cloud: What emotion did you feel MOST strongly during Liù's death scene?",
+    "Q9. Multiple Choice: Is Puccini's Turandot cultural exchange or appropriation? (A) Exchange (B) Appropriation (C) Both (D) Depends on perspective",
+    "Q10. Open-ended: What is ONE thing you learned about cross-cultural communication from this game?",
+    "Q11. Scale (1-5): How would you rate the difficulty of this detective game?",
+    "Q12. Open-ended: If you could rewrite the ending of Turandot, what would happen?"
+  ];
+
+  const text = questions.join("\n\n");
+  navigator.clipboard.writeText(text).then(() => {
+    document.getElementById('copyMsg').style.display = 'block';
+    setTimeout(() => { document.getElementById('copyMsg').style.display = 'none'; }, 3000);
+  });
+}
+</script>
+
+</div>
+</body>
+</html>
